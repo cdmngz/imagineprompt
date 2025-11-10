@@ -1,5 +1,6 @@
 // src/adapters/auth/port-impl.ts
 
+import { env } from "@/adapters/config/env";
 import { auth } from "@/auth";
 import type { AuthPort, SessionUser } from "@/ports/auth";
 
@@ -16,12 +17,12 @@ export const authAdapter: AuthPort = {
     return u;
   },
   signInUrl() {
-    return "/api/auth/signin?provider=cognito";
+    return "/api/auth/google";
   },
   signOutUrl(redirectTo = "/") {
-    const base = process.env.NEXTAUTH_URL ?? "http://localhost:3000";
+    const base = env.APP_URL ?? "http://localhost:3000";
     const u = new URL("/api/auth/signout", base);
-    u.searchParams.set("callbackUrl", redirectTo);
+    u.searchParams.set("redirectTo", redirectTo);
     return u.toString();
   },
 };
